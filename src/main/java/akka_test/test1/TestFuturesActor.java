@@ -84,6 +84,7 @@ class FutureActor extends UntypedActor {
 	@Override   
 	public void onReceive(Object msg ) throws Exception {
 		//Thread.sleep(4000);   
+		System.out.println("self   "+getSelf()+" sender   "+ getSender());//ask返回的sender 是一个临时的actor,不需要自己定义存在
 		getSender().tell( getSelf()+"reply  "+msg+getContext() , getSelf());   
 		} 
 	

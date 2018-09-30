@@ -16,15 +16,23 @@ public class Actor_find {
 		//ActorSelection select = sys.actorSelection("akka://sys/user/lookup/targetActor");
 //		ActorSelection select = sys.actorSelection("akka.tcp://sys@127.0.0.1:2552/user/lookup/targetActor");
 		//select.tell("find you", ActorRef.noSender());
-	
+		
+		ActorRef findme = sys.actorOf(Props.create(TargetActor.class),"findme");
+		ActorRef te = sys.actorOf(Props.create(TargetActor.class),"te");
+		System.out.println(findme.toString());
+		ActorSelection se = sys.actorSelection("akka://sys/user/findme");
+		se.tell(new Identify("sss"), te);
+		//selection对象会自动在内部tell第二个参数的ActorRef,发送一个包含该selection查询到的ActorRef的ActorIdentity	
 	}
 }
+
+
 
 class TargetActor extends UntypedActor { 
 	@Override  
 	public void onReceive(Object msg) throws Exception {
 		System.out.println("on");
-		if(msg instanceof Identify) {
+		if(msg instanceof ActorIdentity) {
 			System.out.println("inhere");
 			ActorIdentity ai = (ActorIdentity) msg;   
 			ActorRef ac = ai.getRef();
