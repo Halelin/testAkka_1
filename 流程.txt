@@ -1,0 +1,85 @@
+
+app.js
+1.登陆wx.login()获取code,由code获取openid和session_key
+2.判断用户是否已经注册，若已经注册，则跳转首页，若未注册，则一定未授权，跳转授权页面授权并注册
+
+authorize.js
+1.判断授权信息，若已经授权，则已经注册，跳转首页，若未授权，则去授权
+2.授权过程中去注册
+
+bugs：
+1.删除授权信息，但未删除注册信息，在需要用户信息的界面需要跳转授权界面重新授权，授权时会判断是否要重新注册。
+
+
+
+1.git test
+	1.branch push  		
+		git checkout -b branchname
+		git push origin yourbranch
+	3.merge branch to master
+		在master目录下： git merge yourbranch
+		git push origin master
+	4.pull branch to local 
+		git pull
+		git checkout yourbranch
+	5.drop local file
+		从index恢复到工作目录，丢失工作目录未add内容: git checkout .
+		从HEAD回复到index和工作目录，丢失工作目录未add和index未commit内容： gir checkout HEAD .
+	6.rollback 
+		1)
+		git reset XXX
+		git push -f   强制提交
+		2)
+		git revert xxx
+		git push 直接提交，不会删除commit而是怎加一个反向commit
+2.server code review
+	1)url
+	2)String2Json
+	3)Json2Map
+	4)thread&servlet
+3.wx 
+	后台搭建和程序拉起，数据传递
+	前端api组件
+4.微信原生api调用
+	session_key token
+	
+点击我的地址->跳转地址列表页面，请求API（带上token）返回当前用户的地址列表并渲染，缓存所有地址，
+地址列表页面点击编辑，发送当前地址id,跳转编辑页面，读取用户该地址缓存并渲染，若缓存不存在则发送请求获得地址后渲染。
+地址表结构：
+isDefault 1 为默认地址
+create table userAddress(
+id int primary key auto_increment,
+openId varchar(50) not null,
+isDefault boolean,
+name varchar(10),
+phoneNum varchar(11),
+address varchar(30),
+mailCode varchar(6),
+province  varchar(10),
+city  varchar(10),
+district varchar(10),
+createTime timestamp,
+editTime timestamp
+);
+insert into userAddress values (null,12,1,'sf','11111111111','ds','123456','asdfasdf','asdfdfd','sdf',now(),now());
+
+userwx
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| id          | varchar(50) | NO   |     | NULL    |       |
+| nickname    | varchar(20) | NO   |     | NULL    |       |
+| registedate | timestamp   | NO   |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+
+
+10.90.3.38
+
+各快餐品牌点餐流程按照之前大家发的资料整理见附件，
+需要大家补充流程截图或者图片给我，要求：
+1.手机点餐，包括小程序，APP，公众号等的详细过程，各个页面跳转的流程截图
+2.店面点餐或者自助点餐的各个过程拍照，从点餐区域到取餐区域,要拍到人流
+3.店面中可以嵌入二维码的地方都可以拍下来，例如食物包装，餐盘垫纸，宣传海报，桌面上的宣传贴纸等
+
+调查:
+各个快餐品牌是否已经存在问卷调查，问卷调查的形式和内容，有图片的尽量提供图片。
