@@ -11,6 +11,7 @@ public class Akka_Router_Routee_Group {
 	public static void main(String[] args) {
 		ActorSystem sys = ActorSystem.create("sys");
 		ActorRef masterActor = sys.actorOf(Props.create(MasterRouterActor2.class),"masterActor");
+		System.out.println("中转actor: "+ masterActor);
 		ActorRef sender = sys.actorOf(Props.create(Sender.class));
 		masterActor.tell("hello a", sender);
 		masterActor.tell("hello b", sender);
@@ -38,9 +39,9 @@ class MasterRouterActor2 extends UntypedActor {
 	public void onReceive(Object msg) throws Exception {  
 		if(msg instanceof String) {
 			//不改变原始发送者，相当于forward方式发送信息
-			//router.tell(msg, getSender());  
+			router.tell(msg, getSender());  
 			//由路由中转改变sender为自己，则会发送到路由中转的Actor
-			router.tell(msg, getSelf()); 
+			//router.tell(msg, getSelf()); 
 			//router2.tell(msg, ActorRef.noSender());
 		}else if(msg instanceof Integer) {
 			System.out.println(msg + "隐藏了原始发送者");
@@ -52,7 +53,7 @@ class WorkTask extends UntypedActor {
 	@Override
 	public void onReceive(Object msg) throws Exception { 
 		System.out.println(getSelf() + "->" + msg+"-->"+getContext().parent());
-		System.out.println(getSender());
+		System.out.println("sender  "+getSender());
 		getSender().tell(1, getSelf());//消息会发送到最初的发送者，若由路由中转改变发送者，则会发送到路由中转的Actor
 	} 
 }

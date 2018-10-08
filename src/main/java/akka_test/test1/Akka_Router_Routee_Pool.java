@@ -23,7 +23,7 @@ class Sender extends UntypedActor{
 	@Override
 	public void onReceive(Object arg0) throws Throwable {
 		// TODO Auto-generated method stub
-		System.out.println("get you "+arg0+"  sender "+getSender());
+		System.out.println(getSelf()+"  get you "+arg0+"  sender "+getSender());
 	}
 }
 
@@ -39,7 +39,7 @@ class MasterRouterActor extends UntypedActor {
 		
 		//由配置文件加载pool类型的路由，/masterRouterActor/taskActor2
 		router2 = getContext().actorOf(FromConfig.getInstance().props(Props.create(TaskActor.class)),"taskActor2"); 
-		System.out.println("router:"+router2);
+		System.out.println("router2:"+router2);
 	}    
 	@Override   
 	public void onReceive(Object msg) throws Exception {  
@@ -47,8 +47,8 @@ class MasterRouterActor extends UntypedActor {
 			//不改变原始发送者，相当于forward方式发送信息
 			//router.tell(msg, getSender());  
 			//由路由中转改变sender为自己，则会发送到路由中转的Actor
-			router.tell(msg, getSelf()); 
-			//router2.tell(msg, ActorRef.noSender());
+		//	router.tell(msg, getSelf()); 
+			router2.tell(msg, getSender());
 		}else if(msg instanceof Integer) {
 			System.out.println(msg + "隐藏了原始发送者");
 		}

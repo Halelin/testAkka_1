@@ -8,7 +8,7 @@ public class ActorDemo extends UntypedActor{
 	public void onReceive(Object msg) throws Throwable {
 		// TODO Auto-generated method stub
 		//getSender().tell("actorDemo: "+msg,getSelf());
-		System.out.println("actorDemo: "+msg);
+		System.out.println("self : "+getSelf()+"actorDemo: "+msg);
 	}
 
 }

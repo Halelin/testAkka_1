@@ -31,7 +31,6 @@ public class Akka_Router_Routee {
 		router.tell("Hello A", ActorRef.noSender());
 		router.tell("Hello B", ActorRef.noSender());
 		router.tell("Hello C", ActorRef.noSender());
-		
 		//3秒后重新发送信息到router，由于已经删除一个routee，所以会报错
 		sys.scheduler().scheduleOnce(Duration.create(3, "s"), router, "Hello D",sys.dispatcher(), null);
 	}

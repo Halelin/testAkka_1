@@ -14,7 +14,7 @@ public class Akka_Remote {
 		ActorSystem sys = ActorSystem.create("sys");
 		ActorRef rmtActor =sys.actorOf(Props.create(ActorDemo.class),"rmtActor");
 		//启动本远程ActorSystem
-		ActorSelection selection = sys.actorSelection("akka.tcp://sys@127.0.0.1:2552/user/rmtActor"); 
+		ActorSelection selection = sys.actorSelection("akka.tcp://sys@127.0.0.1:2701/user/rmtActor"); 
 		selection.tell("hello creater", ActorRef.noSender());
 		
 		//基于conf配置创建远程Actor
@@ -23,11 +23,14 @@ public class Akka_Remote {
 		System.out.println(ref.path());
 		
 		//基于远程部署API withDeploy创建远程Actor
-		Address addr = new Address("akka.tcp", "sys", "127.0.0.1", 2553);
+		Address addr = new Address("akka.tcp", "sys", "127.0.0.1", 2702);
 		ActorRef ref2=
 				sys.actorOf(Props.create(ActorDemo.class). withDeploy(new Deploy(new RemoteScope(addr))),"refActor2");
 		ref2.tell("this is ref2", ActorRef.noSender());
 		System.out.println(ref2.path());
+		
+		//被远程路由调用Actor
+		ActorRef rmt1 = sys.actorOf(Props.create(ActorDemo.class),"rmt1");
 	}
 }
 
