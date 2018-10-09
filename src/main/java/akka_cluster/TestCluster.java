@@ -23,12 +23,13 @@ public class TestCluster {
 		System.out.println(config);
 		//创建ActorSystem
 		ActorSystem system = ActorSystem.create(sysname, config);   
+		//启动集群节点
 		system.actorOf(Props.create(ClusterDemo.class),"clusterDemo"+port);
 		
 		//可以通过Cluster.get（system）.state（）方法得到CurrentClusterState对象,
 				//该对象中包含了当前Leader节点地址、所有节点列表、Unreachable节点列表等信息：
 				Timer timer =new Timer();
-				timer.schedule(new TimerTask() {			
+				timer.schedule(new TimerTask() {		
 					@Override
 					public void run() {
 						CurrentClusterState state=Cluster.get(system).state(); 

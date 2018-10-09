@@ -21,9 +21,9 @@ import scala.concurrent.duration.Duration;
 
 
 public class Akka_Router_Routee {
-	public static  ActorSystem sys =ActorSystem.create("sys");
+	
 	public static void main(String[] args) {	
-		
+		ActorSystem sys =ActorSystem.create("sys");
 		ActorRef router = sys.actorOf(Props.create(RouterTaskActor.class),"router");
 		//监控rutee状态
 		ActorRef Router_watcher = sys.actorOf(Props.create(Router_watcher.class),"Router_watcher");		
@@ -111,7 +111,7 @@ class Router_watcher extends UntypedActor {
 				System.out.println("监听"+ref+"中");
 				if(ac.correlationId().equals("000")) {
 					System.out.println(getSelf());
-					Akka_Router_Routee.sys.scheduler().scheduleOnce(Duration.create(1, "s"), ref, PoisonPill.getInstance(),Akka_Router_Routee.sys.dispatcher(), getSelf());
+					getContext().system().scheduler().scheduleOnce(Duration.create(1, "s"), ref, PoisonPill.getInstance(),getContext().system().dispatcher(), getSelf());
 					
 				}
 			}

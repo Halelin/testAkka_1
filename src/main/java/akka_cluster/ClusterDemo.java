@@ -15,7 +15,8 @@ public class ClusterDemo extends UntypedActor {
 	@Override   
 //	让当前Actor订阅UnreachableMember、MemberEvent事件，
 	public void preStart() {
-		cluster.subscribe(getSelf(), ClusterEvent.initialStateAsEvents(),UnreachableMember.class,MemberEvent.class); 
+//		cluster.subscribe(getSelf(), ClusterEvent.initialStateAsEvents(),UnreachableMember.class,MemberEvent.class);
+		cluster.subscribe(getSelf(),UnreachableMember.class,MemberEvent.class);//两种订阅事件方式区别？
 		}   
 	@Override  
 	public void postStop() {
