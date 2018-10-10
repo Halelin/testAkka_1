@@ -10,6 +10,8 @@ import akka.cluster.Member;
 //文字统计后端
 public class WordCountService extends UntypedActor {//后端服务，集群Actor
 	Cluster cluster = Cluster.get(getContext().system()); 
+	
+	int ok =0;
 	@Override 
 	public void preStart() {    
 		cluster.subscribe(getSelf(), MemberUp.class);    
@@ -34,11 +36,35 @@ public class WordCountService extends UntypedActor {//后端服务，集群Actor
 			int word_count = content.split("").length; //拆分文章后統計字母個數 
 			getSender().tell(new CountResult(art.getId(), word_count),getSelf()); 
 		}else if(msg instanceof MemberUp){
-System.out.println("self ::: " +  getSelf());
+			System.out.println("self ::: " +  getSelf());
 			MemberUp mu=(MemberUp)msg;     
 			Member m=mu.member();    
 			System.out.println(m+" is up"); 
-		}else{
+			ClusterUtil.getAllClusterInstantly(getContext().system());
+			
+			if(m.hasRole("wordFrontend")){  //过滤出前端服务的集群节点
+				ok=1;
+				System.out.println("ok  "+ok);
+//				System.out.println("inner address  "+ m.address());
+//				System.out.println(m.address()+"  m.address ");
+//				//tell前端服务Actor ,此次启动的集群节点已经可用
+//				System.out.println("tell ok ： "+getContext().actorSelection(m.address() + "/user/masterActor"));
+//				getContext().actorSelection(m.address() + "/user/masterActor").tell ("serviceIsOK", getSelf());
+			}
+			
+		}else if(msg instanceof String) {
+			String cmd =(String )msg;
+			if(cmd.equals("isready")){//
+				System.out.println("确认中……ok  "+ok);
+				if(ok==1){//
+					getSender().tell("ready",getSelf());  
+					ok=0;
+				}else{
+					getSender().tell("notready",getSelf());   
+				}   	
+			}
+		}
+		else{
 			unhandled(msg); 
 		}   
 	}

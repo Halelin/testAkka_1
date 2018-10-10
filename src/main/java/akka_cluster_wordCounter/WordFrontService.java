@@ -17,7 +17,9 @@ public class WordFrontService extends UntypedActor {//前端服务，普通Actor
 	@Override    
 	public void onReceive(Object msg) throws Exception {
 		if (msg instanceof Article) {
-			jobCounter++;   
+			jobCounter++; 
+			System.out.println("jobcounter"+jobCounter);
+			System.out.println("services num  "+wordCountServices.size());
 			Article art = (Article) msg;  
 			// 通过取余选择后端节点  
 			int serviceNodeIndex = jobCounter % wordCountServices.size();     
